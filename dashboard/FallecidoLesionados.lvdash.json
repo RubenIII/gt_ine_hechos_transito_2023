@@ -1,0 +1,871 @@
+{
+  "datasets": [
+    {
+      "name": "4a42694b",
+      "displayName": "vista_fallecidos_lescionados",
+      "queryLines": [
+        "SELECT  TH_HECHOS.fl_fecha FECHA,\n",
+        "        DIM_MES.mes_mezcla MES,\n",
+        "        DIM_FALL_LES.fall_les VICTIMA,\n",
+        "        SUM(1) INCIDENTES\n",
+        "FROM    cat_ine_trafico_dev.silver_ine_trafico_dev.th_fallecidos_lesionados   TH_HECHOS,\n",
+        "        cat_ine_trafico_dev.silver_ine_trafico_dev.dim_ine_mes_ocu DIM_MES,\n",
+        "        cat_ine_trafico_dev.silver_ine_trafico_dev.dim_ine_fall_les DIM_FALL_LES\n",
+        "WHERE   TH_HECHOS.id_mes_ocurrio = DIM_MES.id_mes_ocurrio\n",
+        "AND     TH_HECHOS.id_fall_les = DIM_FALL_LES.id_fall_les\n",
+        "GROUP BY fl_fecha, DIM_MES.mes_mezcla, DIM_FALL_LES.fall_les\n",
+        "ORDER BY FECHA;\n"
+      ]
+    },
+    {
+      "name": "0fee3a07",
+      "displayName": "ine_victimas_genero_tevento",
+      "queryLines": [
+        "SELECT * FROM cat_ine_trafico_dev.gold_ine_trafico_dev.ine_victimas_genero_tevento"
+      ]
+    },
+    {
+      "name": "5ae6086f",
+      "displayName": "ine_victimas_dept",
+      "queryLines": [
+        "SELECT * FROM cat_ine_trafico_dev.gold_ine_trafico_dev.ine_victimas_dept"
+      ]
+    },
+    {
+      "name": "2ee157be",
+      "displayName": "ine_victimas_depto_guate",
+      "queryLines": [
+        "SELECT * FROM cat_ine_trafico_dev.gold_ine_trafico_dev.ine_victimas_depto_guate"
+      ]
+    },
+    {
+      "name": "f89c74ed",
+      "displayName": "ine_victimas_depto_guate_zona",
+      "queryLines": [
+        "SELECT * FROM cat_ine_trafico_dev.gold_ine_trafico_dev.ine_victimas_depto_guate_zona"
+      ]
+    },
+    {
+      "name": "03993f30",
+      "displayName": "ine_victimas_genero_vehiculo",
+      "queryLines": [
+        "SELECT * FROM cat_ine_trafico_dev.gold_ine_trafico_dev.ine_victimas_genero_vehiculo"
+      ]
+    },
+    {
+      "name": "29b52784",
+      "displayName": "ine_victimas_genero",
+      "queryLines": [
+        "SELECT * FROM cat_ine_trafico_dev.gold_ine_trafico_dev.ine_victimas_genero"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "b7c9080d",
+      "displayName": "Victimas por Ubicacion",
+      "layout": [
+        {
+          "widget": {
+            "name": "747a0db8",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block\"><span style=\"font-size: 24px;\">**Victimas de Incidentes de Transito Durante 2023**</span></span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "fallecidos-y-lesion",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5ae6086f",
+                  "fields": [
+                    {
+                      "name": "Departamento",
+                      "expression": "`Departamento`"
+                    },
+                    {
+                      "name": "sum(TotalFallecidos)",
+                      "expression": "SUM(`TotalFallecidos`)"
+                    },
+                    {
+                      "name": "sum(TotalLesionados)",
+                      "expression": "SUM(`TotalLesionados`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Departamento",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "fields": [
+                    {
+                      "fieldName": "sum(TotalFallecidos)",
+                      "displayName": "Total Fallecidos"
+                    },
+                    {
+                      "fieldName": "sum(TotalLesionados)",
+                      "displayName": "Total Lesionados"
+                    }
+                  ],
+                  "axis": {
+                    "title": "Fallecidos y Lesionados"
+                  }
+                },
+                "color": {
+                  "legend": {
+                    "title": ""
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Fallecidos y Lesionados en Departamentos",
+                "description": "No incluye el departamenteo de Guatemala"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ],
+                "layout": "group"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "fallecidos-lesionados-departamento-guatemala",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "2ee157be",
+                  "fields": [
+                    {
+                      "name": "Municipio",
+                      "expression": "`Municipio`"
+                    },
+                    {
+                      "name": "sum(TotalFallecidos)",
+                      "expression": "SUM(`TotalFallecidos`)"
+                    },
+                    {
+                      "name": "sum(TotalLesionados)",
+                      "expression": "SUM(`TotalLesionados`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Municipio",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "primary": {
+                    "fields": [
+                      {
+                        "fieldName": "sum(TotalFallecidos)",
+                        "displayName": "Total Fallecidos"
+                      }
+                    ],
+                    "scale": {
+                      "type": "quantitative"
+                    },
+                    "axis": {
+                      "title": "Fallecidos"
+                    }
+                  },
+                  "secondary": {
+                    "fields": [
+                      {
+                        "fieldName": "sum(TotalLesionados)",
+                        "displayName": "Total Lesionados"
+                      }
+                    ],
+                    "scale": {
+                      "type": "quantitative"
+                    },
+                    "axis": {
+                      "title": "Lesionados"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Fallecidos y Lesionados Departamento de Guatemala",
+                "description": "No incluye el municipio de Guatemala (Ciudad de Guatemala)"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "fallecidos-lecionados-ciudad-guatemala",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "f89c74ed",
+                  "fields": [
+                    {
+                      "name": "Zona",
+                      "expression": "`Zona`"
+                    },
+                    {
+                      "name": "sum(TotalFallecidos)",
+                      "expression": "SUM(`TotalFallecidos`)"
+                    },
+                    {
+                      "name": "sum(TotalLesionados)",
+                      "expression": "SUM(`TotalLesionados`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Zona",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fields": [
+                    {
+                      "fieldName": "sum(TotalFallecidos)",
+                      "displayName": "Total Fallecidos"
+                    },
+                    {
+                      "fieldName": "sum(TotalLesionados)",
+                      "displayName": "Total Lesionado"
+                    }
+                  ],
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "axis": {
+                    "title": "Fallecidos y Lesionados"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Fallecidos y Lecionados por Zona en Ciudad de Guatemala"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ],
+                "layout": "stack"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 17,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "2f2b2078",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "4a452338",
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": []
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS"
+    },
+    {
+      "name": "ae8e89de",
+      "displayName": "Victimas por Genero",
+      "layout": [
+        {
+          "widget": {
+            "name": "fallecidos-y-lesionados-por-genero",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "29b52784",
+                  "fields": [
+                    {
+                      "name": "Mes",
+                      "expression": "`Mes`"
+                    },
+                    {
+                      "name": "Sexo",
+                      "expression": "`Sexo`"
+                    },
+                    {
+                      "name": "sum(TotalFallecidos)",
+                      "expression": "SUM(`TotalFallecidos`)"
+                    },
+                    {
+                      "name": "sum(TotalLesionados)",
+                      "expression": "SUM(`TotalLesionados`)"
+                    }
+                  ],
+                  "cubeGroupingSets": {
+                    "sets": [
+                      {
+                        "fieldNames": [
+                          "Mes"
+                        ]
+                      },
+                      {
+                        "fieldNames": [
+                          "Sexo"
+                        ]
+                      }
+                    ]
+                  },
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "ASC",
+                      "expression": "`Mes`"
+                    },
+                    {
+                      "direction": "ASC",
+                      "expression": "`Sexo`"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pivot",
+              "encodings": {
+                "rows": [
+                  {
+                    "fieldName": "Mes"
+                  }
+                ],
+                "columns": [
+                  {
+                    "fieldName": "Sexo"
+                  }
+                ],
+                "cell": {
+                  "type": "multi-cell",
+                  "fields": [
+                    {
+                      "fieldName": "sum(TotalFallecidos)",
+                      "cellType": "text",
+                      "style": {
+                        "type": "color-scale",
+                        "backgroundColor": {
+                          "scale": {
+                            "type": "quantitative",
+                            "colorRamp": {
+                              "mode": "scheme",
+                              "scheme": "reds"
+                            }
+                          }
+                        }
+                      },
+                      "displayName": "Fallecidos"
+                    },
+                    {
+                      "fieldName": "sum(TotalLesionados)",
+                      "cellType": "text",
+                      "style": {
+                        "type": "color-scale",
+                        "backgroundColor": {
+                          "scale": {
+                            "type": "quantitative",
+                            "colorRamp": {
+                              "mode": "scheme",
+                              "scheme": "orangered"
+                            }
+                          }
+                        }
+                      },
+                      "displayName": "Lesionados"
+                    }
+                  ],
+                  "displayAs": "columns"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Fallecidos y Lesionados por Genero",
+                "description": "Año 2023"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 4,
+            "height": 10
+          }
+        },
+        {
+          "widget": {
+            "name": "total-fallecidos-durante-2023-tipo-vehiculo",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "03993f30",
+                  "fields": [
+                    {
+                      "name": "sum(TotalFallecidos)",
+                      "expression": "SUM(`TotalFallecidos`)"
+                    },
+                    {
+                      "name": "TipoVehiculo",
+                      "expression": "`TipoVehiculo`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "funnel",
+              "encodings": {
+                "x": {
+                  "fieldName": "sum(TotalFallecidos)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "TipoVehiculo",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "x-reversed"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Total de Fallecidos Durante por Tipo de Vehiculo",
+                "description": "Año 2023"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 1,
+            "width": 2,
+            "height": 10
+          }
+        },
+        {
+          "widget": {
+            "name": "fallecidos-lesionados-tipo-incidente",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "0fee3a07",
+                  "fields": [
+                    {
+                      "name": "TipoEvento",
+                      "expression": "`TipoEvento`"
+                    },
+                    {
+                      "name": "sum(TotalFallecidos)",
+                      "expression": "SUM(`TotalFallecidos`)"
+                    },
+                    {
+                      "name": "sum(TotalLesionados)",
+                      "expression": "SUM(`TotalLesionados`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "TipoEvento",
+                  "displayName": "Tipo de Evento",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fields": [
+                    {
+                      "fieldName": "sum(TotalFallecidos)",
+                      "displayName": "Total Fallecidos"
+                    },
+                    {
+                      "fieldName": "sum(TotalLesionados)",
+                      "displayName": "Total Lesionados"
+                    }
+                  ],
+                  "scale": {
+                    "type": "quantitative",
+                    "reverse": false
+                  },
+                  "axis": {
+                    "title": "Total Fallecidos y Lesionados",
+                    "hideGrid": false,
+                    "hideLabels": false
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Fallecidos y Lesionados por Tipo de Incidente",
+                "description": "Año 2023"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ],
+                "layout": "group"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 11,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "104d6b33",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block;\"><span style=\"font-size: 24px;\">**Victimas en Incidentes de Tránsito por Genero, Vehículo y Tipo de Incidente**</span></span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 1
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
