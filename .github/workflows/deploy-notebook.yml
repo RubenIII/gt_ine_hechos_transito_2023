@@ -21,7 +21,7 @@ jobs:
         ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
         ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
 
-        # CERTIFICACIONES
+        # CERTIDICACIONES
         NOTEBOOK_BASE="/Workspace/Users/coloma.ruben@gmail.com/gt_ine_hechos_transito_2023/certificaciones"
         NOTEBOOKS=("certificaciones") 
 
@@ -34,6 +34,77 @@ jobs:
             "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE&direct_download=true" \
             --output "notebooks_to_deploy/$nb.py"
         done
+
+        # DASHBAORDS
+        NOTEBOOK_BASE="/Workspace/Users/coloma.ruben@gmail.com/gt_ine_hechos_transito_2023/dashboard"
+        NOTEBOOKS=("FallecidosLesionados") 
+
+        mkdir -p notebooks_to_deploy
+
+        for nb in "${NOTEBOOKS[@]}"; do
+          echo "Exportando $nb en modo raw..."
+          curl -s -X GET \
+            -H "Authorization: Bearer $ORIGIN_TOKEN" \
+            "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE&direct_download=true" \
+            --output "notebooks_to_deploy/$nb.py"
+        done
+
+        # DEPLOY
+        NOTEBOOK_BASE="/Workspace/Users/coloma.ruben@gmail.com/gt_ine_hechos_transito_2023/deploy"
+        NOTEBOOKS=("deploy-notebook.yml")
+
+        mkdir -p notebooks_to_deploy
+
+        for nb in "${NOTEBOOKS[@]}"; do
+          echo "Exportando $nb en modo raw..."
+          curl -s -X GET \
+            -H "Authorization: Bearer $ORIGIN_TOKEN" \
+            "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE&direct_download=true" \
+            --output "notebooks_to_deploy/$nb.py"
+
+        # PROCESOS
+        NOTEBOOK_BASE="/Workspace/Users/coloma.ruben@gmail.com/gt_ine_hechos_transito_2023/procesos"
+        NOTEBOOKS=("EDA" "inges_vehiculos" "ingest_fallecidos_lesionados" "ingest_hechos_transito" "resumen_victimas" "trasform")
+
+        mkdir -p notebooks_to_deploy
+
+        for nb in "${NOTEBOOKS[@]}"; do
+          echo "Exportando $nb en modo raw..."
+          curl -s -X GET \
+            -H "Authorization: Bearer $ORIGIN_TOKEN" \
+            "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE&direct_download=true" \
+            --output "notebooks_to_deploy/$nb.py"
+        done
+        # REVERSION
+
+        # SCRIPTS
+        NOTEBOOK_BASE="/Workspace/Users/coloma.ruben@gmail.com/gt_ine_hechos_transito_2023/scripts"
+        NOTEBOOKS=("01Credenciales" "02MedallonCatalogCapas" "03_CREATE_TABLES")
+
+        mkdir -p notebooks_to_deploy
+
+        for nb in "${NOTEBOOKS[@]}"; do
+          echo "Exportando $nb en modo raw..."
+          curl -s -X GET \
+            -H "Authorization: Bearer $ORIGIN_TOKEN" \
+            "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE&direct_download=true" \
+            --output "notebooks_to_deploy/$nb.py"
+        done
+        # SEGURIDAD
+        NOTEBOOK_BASE="/Workspace/Users/coloma.ruben@gmail.com/gt_ine_hechos_transito_2023/seguridad"
+        NOTEBOOKS=("01GrantDatabricks")
+
+        mkdir -p notebooks_to_deploy
+
+        for nb in "${NOTEBOOKS[@]}"; do
+          echo "Exportando $nb en modo raw..."
+          curl -s -X GET \
+            -H "Authorization: Bearer $ORIGIN_TOKEN" \
+            "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE&direct_download=true" \
+            --output "notebooks_to_deploy/$nb.py"
+        done
+
+
 
     - name:  Test permisos Databricks destino
       run: |
